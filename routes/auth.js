@@ -4,7 +4,48 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-// Register
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Authentication routes
+ */
+
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *               - age
+ *               - gender
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               age:
+ *                 type: integer
+ *               gender:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: User already exists
+ */
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password, age, gender } = req.body;
@@ -30,7 +71,32 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Log in a user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successful login
+ *       400:
+ *         description: Invalid credentials
+ */
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;

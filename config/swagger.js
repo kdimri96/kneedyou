@@ -10,7 +10,7 @@ const options = {
     },
     servers: [
       {
-        url: "https://kneedyou.onrender.com", // use localhost:5000 if testing locally https://kneedyou.onrender.com
+        url: "http://localhost:5000", // use localhost:5000 if testing locally https://kneedyou.onrender.com
       },
     ],
     components: {

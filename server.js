@@ -21,10 +21,17 @@ app.use('/api/auth', authRoutes);
 // Protected routes (authentication required)
 app.use('/api/bio', authMiddleware, bioRoutes);  // Apply authMiddleware to bio routes
 
+// MongoDB connection - NON-SRV URI (replace your values)
+const uri = "mongodb://admin:YJWGBy2muxd42WpZ@kneedyou-shard-00-00.biu5qze.mongodb.net:27017,kneedyou-shard-00-01.biu5qze.mongodb.net:27017,kneedyou-shard-00-02.biu5qze.mongodb.net:27017/?ssl=true&replicaSet=atlas-xxxxxx-shard-0&authSource=admin&retryWrites=true&w=majority";
+
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   retryWrites: true,
   w: 'majority'
 }).catch(err => console.log('Connection error:', err));
+
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});

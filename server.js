@@ -22,8 +22,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/bio', authMiddleware, bioRoutes);  // Apply authMiddleware to bio routes
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    app.listen(5000, () => console.log("🚀 Server running on port 5000"));
-  })
-  .catch((err) => console.error("❌ MongoDB error:", err));
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  retryWrites: true,
+  w: 'majority'
+}).catch(err => console.log('Connection error:', err));

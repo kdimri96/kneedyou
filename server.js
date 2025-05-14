@@ -27,15 +27,29 @@ app.use('/api/auth', authRoutes);
 app.use('/api/bio', authMiddleware, bioRoutes);  // Apply authMiddleware to bio routes
 
 // MongoDB connection - NON-SRV URI (replace your values)
-const uri = "mongodb://admin:YJWGBy2muxd42WpZ@kneedyou-shard-00-00.biu5qze.mongodb.net:27017,kneedyou-shard-00-01.biu5qze.mongodb.net:27017,kneedyou-shard-00-02.biu5qze.mongodb.net:27017/?ssl=true&replicaSet=atlas-xxxxxx-shard-0&authSource=admin&retryWrites=true&w=majority";
+const uri = process.env.MONGO_URI || "mongodb+srv://admin:YJWGBy2muxd42WpZ@kneedyou.biu5qze.mongodb.net/?retryWrites=true&w=majority&appName=kneedYou";
 
 // MongoDB connection
+// mongoose.connect(uri, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   retryWrites: true,
+//   w: 'majority'
+// }).catch(err => console.log('Connection error:', err));
+
 mongoose.connect(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000,
+  socketTimeoutMS: 45000,
+  connectTimeoutMS: 30000,
+  maxPoolSize: 5,
   retryWrites: true,
   w: 'majority'
-}).catch(err => console.log('Connection error:', err));
+});
+
+// Add these debug logs
+mongoose.connection.on('connecting', () => console.log('🔄 Connecting to MongoDB...'));
+mongoose.connection.on('connected', () => console.log('✅ MongoDB Connected!'));
+mongoose.connection.on('error', (err) => console.error('❌ Connection Error:', err));
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");
